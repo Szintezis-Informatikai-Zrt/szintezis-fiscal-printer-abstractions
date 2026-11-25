@@ -1,6 +1,6 @@
 # CronisNext.FiscalPrinter.Abstractions
 
-Source of the `CronisNext.FiscalPrinter.Abstractions` package: the interfaces, models, enums, errors and events that fiscal printer implementations for CronisNext implement and applications code against (`IFiscalPrinterService`, `IPrinterContext`, `IPrinterInitializationPlugin`).
+Source of the `CronisNext.FiscalPrinter.Abstractions` package: the interfaces, models, enums, errors and events of the Celeste Fiscal Printer Library, which fiscal printer implementations implement and applications code against (`IFiscalPrinterService`, `IPrinterContext`, `IPrinterInitializationPlugin`).
 
 Documentation: **[wiki](https://github.com/Szintezis-Informatikai-Zrt/szintezis-fiscal-printer-abstractions/wiki)**. Upgrading from an earlier version: see the [Migration Guide](https://github.com/Szintezis-Informatikai-Zrt/szintezis-fiscal-printer-abstractions/wiki/Migration-Guide).
 
