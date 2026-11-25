@@ -36,7 +36,7 @@ public sealed class AlreadyPrintedError() : ErrorBase
     /// <value>
     /// A descriptive message indicating that the document has already been printed and cannot be processed again.
     /// </value>
-    public new string Message { get; } = "Already printed.";
+    public override string Message { get; } = "Already printed.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

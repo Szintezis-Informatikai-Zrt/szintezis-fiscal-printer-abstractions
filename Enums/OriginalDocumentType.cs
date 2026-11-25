@@ -8,7 +8,7 @@ namespace CronisNext.FiscalPrinter.Enums;
 /// such as returns, storno operations, or payment modifications.
 /// </summary>
 /// <remarks>
-/// Original receipt types specify the category of fiscal document being referenced when performing
+/// Original document types specify the category of fiscal document being referenced when performing
 /// operations that depend on previously issued transactions. This classification is essential for
 /// proper fiscal compliance, audit trail maintenance, and ensuring that referencing operations
 /// follow appropriate business rules and regulatory requirements.
@@ -28,8 +28,8 @@ namespace CronisNext.FiscalPrinter.Enums;
 /// </list>
 /// </para>
 /// </remarks>
-[EnumExtensions]
-public enum OriginalReceiptType
+[EnumExtensions(MetadataSource = MetadataSource.DisplayAttribute)]
+public enum OriginalDocumentType
 {
     /// <summary>
     /// References a standard fiscal receipt issued for retail customer transactions.

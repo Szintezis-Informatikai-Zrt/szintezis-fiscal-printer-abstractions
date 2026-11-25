@@ -1,4 +1,4 @@
-using CronisNext.FiscalPrinter.Enums;
+﻿using CronisNext.FiscalPrinter.Enums;
 using CronisNext.FiscalPrinter.Models;
 using FluentResults;
 
@@ -15,6 +15,25 @@ namespace CronisNext.FiscalPrinter.Interfaces;
 /// </remarks>
 public interface IFiscalPrinterService
 {
+
+    /// <summary>
+    /// Initializes the fiscal printer service, including driver initialization and context setup.
+    /// </summary>
+    /// <param name="cancellationToken">Token to cancel the initialization operation.</param>
+    /// <returns>A task that completes when initialization is finished.</returns>
+    /// <remarks>
+    /// <para>
+    /// This method establishes communication with the printer hardware and prepares the service
+    /// for operations. Implementations that support <see cref="Plugins.IPrinterInitializationPlugin"/>
+    /// (the legacy FisCat AEE implementation) execute all registered plugins first.
+    /// </para>
+    /// <para>
+    /// Initialization can only succeed once. Subsequent calls after successful initialization
+    /// will return immediately. If initialization fails, it may be retried.
+    /// </para>
+    /// </remarks>
+    Task InitializeAsync(CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Configures the fiscal printer with essential operational parameters including receipt limits,
     /// currency rates, and custom payment methods.
@@ -81,6 +100,7 @@ public interface IFiscalPrinterService
     /// Opens a new fiscal receipt transaction, preparing the printer for item sales.
     /// </summary>
     /// <param name="receiptNo">Optional pre-assigned receipt number for validation</param>
+    /// <param name="documentCanceled">Whether the transaction will be canceled. Implementations without cancellation documents may skip opening.</param>
     /// <param name="cancellationToken">Token to cancel the operation</param>
     /// <returns>A result containing the print response with receipt details, or failure information</returns>
     /// <remarks>
@@ -88,14 +108,14 @@ public interface IFiscalPrinterService
     /// and no other receipt or invoice can be currently open. Returns the assigned receipt number
     /// and printer status information.
     /// </remarks>
-    ValueTask<Result<PrintResponse>> PrintReceiptOpenAsync(string? receiptNo, CancellationToken cancellationToken = default);
+    ValueTask<Result<PrintResponse>> PrintReceiptOpenAsync(string? receiptNo, bool documentCanceled = false, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Completes and prints a fiscal receipt with all items, discounts, and payments.
     /// </summary>
     /// <param name="receipt">Complete receipt data including items, payments, and totals</param>
     /// <param name="receiptNo">Optional receipt number for validation</param>
-    /// <param name="canceled">Whether to cancel the receipt instead of completing it</param>
+    /// <param name="documentCanceled">Whether to cancel the receipt instead of completing it</param>
     /// <param name="cancellationToken">Token to cancel the operation</param>
     /// <returns>A result containing the final receipt details, or failure information</returns>
     /// <remarks>
@@ -103,7 +123,21 @@ public interface IFiscalPrinterService
     /// receipt. The receipt must have been previously opened. If canceled is true, the receipt
     /// is cancelled instead of completed.
     /// </remarks>
-    ValueTask<Result<PrintResponse>> PrintReceiptAsync(Receipt receipt, string? receiptNo, bool canceled = false, CancellationToken cancellationToken = default);
+    ValueTask<Result<PrintResponse>> PrintReceiptAsync(Receipt receipt, string? receiptNo, bool documentCanceled = false, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Reprints the most recent printer output, or returns a failure if the printer does not support reprinting.
+    /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>A result indicating success or failure of the reprint operation.</returns>
+    ValueTask<Result> ReprintLastOutputAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Redisplays the last receipt's QR code, or returns a failure if the printer does not support it.
+    /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>A result indicating success or failure.</returns>
+    ValueTask<Result> RedisplayReceiptQrCodeAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Cancels the currently open receipt transaction without printing.
@@ -121,27 +155,29 @@ public interface IFiscalPrinterService
     /// </summary>
     /// <param name="receiptNo">Optional pre-assigned receipt number for validation</param>
     /// <param name="customer">Customer information required for invoice generation</param>
+    /// <param name="documentCanceled">Whether the transaction will be canceled. Implementations without cancellation documents may skip opening.</param>
     /// <param name="cancellationToken">Token to cancel the operation</param>
     /// <returns>A result containing the invoice details, or failure information</returns>
     /// <remarks>
     /// Simplified invoices require customer information and provide tax-compliant documentation
     /// for business transactions. Returns both receipt and invoice numbers for tracking.
     /// </remarks>
-    ValueTask<Result<PrintResponse>> PrintInvoiceOpenAsync(string? receiptNo, Customer customer, CancellationToken cancellationToken = default);
+    ValueTask<Result<PrintResponse>> PrintInvoiceOpenAsync(string? receiptNo, Customer customer, bool documentCanceled = false, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Completes and prints a simplified invoice with all items, discounts, and payments.
     /// </summary>
     /// <param name="invoice">Complete invoice data including items, customer, and payments</param>
     /// <param name="receiptNo">Optional receipt number for validation</param>
-    /// <param name="canceled">Whether to cancel the invoice instead of completing it</param>
+    /// <param name="invoiceNo">Optional invoice number for validation</param>
+    /// <param name="documentCanceled">Whether to cancel the invoice instead of completing it</param>
     /// <param name="cancellationToken">Token to cancel the operation</param>
     /// <returns>A result containing the final invoice details, or failure information</returns>
     /// <remarks>
     /// Processes all invoice items, applies discounts, validates payments, and prints the final
     /// invoice with customer details. Includes product codes for business accounting requirements.
     /// </remarks>
-    ValueTask<Result<PrintResponse>> PrintInvoiceAsync(Invoice invoice, string? receiptNo, bool canceled = false, CancellationToken cancellationToken = default);
+    ValueTask<Result<PrintResponse>> PrintInvoiceAsync(Invoice invoice, string? receiptNo, string? invoiceNo, bool documentCanceled = false, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Cancels the currently open invoice transaction without printing.
@@ -171,14 +207,13 @@ public interface IFiscalPrinterService
     /// </summary>
     /// <param name="ticket">Complete empties ticket data including items and totals</param>
     /// <param name="receiptNo">Optional receipt number for validation</param>
-    /// <param name="canceled">Whether to cancel the ticket instead of completing it</param>
     /// <param name="cancellationToken">Token to cancel the operation</param>
     /// <returns>A result containing the final ticket details, or failure information</returns>
     /// <remarks>
     /// Processes empties items with negative values representing deposit refunds.
     /// The total amount is typically negative, indicating money owed to the customer.
     /// </remarks>
-    ValueTask<Result<PrintResponse>> PrintEmptiesTicketAsync(EmptiesTicket ticket, string? receiptNo, bool canceled = false, CancellationToken cancellationToken = default);
+    ValueTask<Result<PrintResponse>> PrintEmptiesTicketAsync(EmptiesTicket ticket, string? receiptNo, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Cancels the currently open empties ticket transaction without printing.
@@ -292,14 +327,13 @@ public interface IFiscalPrinterService
     /// </summary>
     /// <param name="returnReceipt">Return details including items, customer, and original purchase information</param>
     /// <param name="receiptNo">Optional receipt number for validation</param>
-    /// <param name="canceled">Whether to cancel the return instead of completing it</param>
     /// <param name="cancellationToken">Token to cancel the operation</param>
     /// <returns>A result containing the return receipt details, or failure information</returns>
     /// <remarks>
     /// Return receipts document merchandise returns and typically result in refunds to customers.
     /// May reference original purchase documents and include customer information.
     /// </remarks>
-    ValueTask<Result<PrintResponse>> PrintReturnAsync(ReturnReceipt returnReceipt, string? receiptNo, bool canceled = false, CancellationToken cancellationToken = default);
+    ValueTask<Result<PrintResponse>> PrintReturnAsync(ReturnReceipt returnReceipt, string? receiptNo, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Closes the fiscal day by printing a Z-report and finalizing all daily transactions.
@@ -350,26 +384,26 @@ public interface IFiscalPrinterService
     /// <summary>
     /// Retrieves the content of a previously printed fiscal document.
     /// </summary>
-    /// <param name="readReceipt">Document identification including receipt mode, closure, and receipt numbers</param>
+    /// <param name="readDocument">Document identification including document mode, closure, and document numbers</param>
     /// <param name="cancellationToken">Token to cancel the operation</param>
     /// <returns>A result containing the document content as a string, or failure information</returns>
     /// <remarks>
     /// Allows reading historical documents for reprinting, verification, or audit purposes.
     /// Returns the complete document content in text format.
     /// </remarks>
-    ValueTask<Result<string>> ReadReceiptCommandAsync(ReadReceipt readReceipt, CancellationToken cancellationToken = default);
+    ValueTask<Result<string>> ReadDocumentAsync(ReadDocument readDocument, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Checks whether a specific receipt was cancelled during printing.
+    /// Checks whether a specific document was cancelled during printing.
     /// </summary>
-    /// <param name="readReceipt">Document identification including receipt mode, closure, and receipt numbers</param>
+    /// <param name="readDocument">Document identification including document mode, closure, and document numbers</param>
     /// <param name="cancellationToken">Token to cancel the operation</param>
-    /// <returns>A result containing true if the receipt was cancelled, false if completed successfully</returns>
+    /// <returns>A result containing true if the document was cancelled, false if completed successfully</returns>
     /// <remarks>
-    /// Used to verify the status of receipts that may have been interrupted during printing
+    /// Used to verify the status of documents that may have been interrupted during printing
     /// due to paper jams, power failures, or other technical issues.
     /// </remarks>
-    ValueTask<Result<bool>> IsReceiptCanceledAsync(ReadReceipt readReceipt, CancellationToken cancellationToken = default);
+    ValueTask<Result<bool>> IsDocumentCanceledAsync(ReadDocument readDocument, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves the list of currently configured custom payment method names.
@@ -381,6 +415,17 @@ public interface IFiscalPrinterService
     /// beyond the standard cash, card, and currency options.
     /// </remarks>
     ValueTask<Result<List<string>>> ReadCustomPaymentNameAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Reads the current diagnostic state from the fiscal printer.
+    /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation</param>
+    /// <returns>A result containing the printer diagnostic values keyed by printer-specific field names</returns>
+    /// <remarks>
+    /// The returned values depend on the printer implementation. Consumers should only access
+    /// documented keys for the configured printer type.
+    /// </remarks>
+    ValueTask<Result<IReadOnlyDictionary<string, object>>> ReadDiagnAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Configures custom payment method names for specialized payment types.
@@ -543,6 +588,9 @@ public interface IFiscalPrinterService
     /// </remarks>
     ValueTask<Result> ClearDisplayAsync(CancellationToken cancellationToken = default);
 
+    /// <summary>Clears the customer display using the eFP protocol; legacy printers return success without sending a command.</summary>
+    ValueTask<Result> ClearCustomerDisplayAsync(CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Displays formatted text on the customer-facing display screen with automatic line wrapping.
     /// </summary>
@@ -618,12 +666,16 @@ public interface IFiscalPrinterService
     /// <summary>
     /// Verifies whether a specific document was successfully printed and completed.
     /// </summary>
-    /// <param name="readReceipt">Document identification including receipt mode, closure, and receipt numbers</param>
+    /// <param name="readDocument">Document identification including document mode, closure, and document numbers</param>
     /// <param name="cancellationToken">Token to cancel the operation</param>
     /// <returns>A result containing true if the document was successfully printed, false if cancelled or failed</returns>
     /// <remarks>
     /// Used to verify document completion status after printing operations,
     /// especially important for ensuring fiscal compliance and audit trails.
     /// </remarks>
-    ValueTask<Result<bool>> IsDocumentSuccessfullyPrintedAsync(ReadReceipt readReceipt, CancellationToken cancellationToken = default);
+    ValueTask<Result<bool>> IsDocumentSuccessfullyPrintedAsync(ReadDocument readDocument, CancellationToken cancellationToken = default);
+
+    ValueTask<Result<PrintResponse>> AddNonFiscalAsync(NonFiscal nonFiscal, CancellationToken cancellationToken = default);
+
+    int GetMaxCustomPaymentCount();
 }

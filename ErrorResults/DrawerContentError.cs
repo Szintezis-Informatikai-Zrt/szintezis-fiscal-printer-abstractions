@@ -69,7 +69,7 @@ public class DrawerContentError : ErrorBase
     /// <value>
     /// A message that specifies which payment method has inadequate drawer balance.
     /// </value>
-    public new string Message { get; }
+    public override string Message { get; }
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

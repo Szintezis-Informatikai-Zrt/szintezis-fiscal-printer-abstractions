@@ -38,7 +38,7 @@ public sealed class PrinterCoverError : ErrorBase
     /// <value>
     /// A descriptive message indicating that the printer cover is open and preventing operations.
     /// </value>
-    public new string Message { get; } = "Printer cover.";
+    public override string Message { get; } = "Printer cover.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

@@ -112,36 +112,4 @@ public class Customer
     /// the printed invoice and can be used for operational notes.
     /// </remarks>
     public string Comment { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Returns a formatted string representation of the customer information suitable for printing on invoices.
-    /// </summary>
-    /// <returns>
-    /// A multi-line string containing all customer information formatted for invoice printing,
-    /// with each address component on a separate line.
-    /// </returns>
-    /// <remarks>
-    /// The string format follows standard invoice formatting conventions with tax number first,
-    /// followed by name and complete address details. Empty fields are replaced with spaces
-    /// to maintain consistent formatting alignment.
-    /// </remarks>
-    public override string ToString()
-    {
-        return $"{TaxRefNum}\n{EnsureNotEmpty(CustomerName)}\n{EnsureNotEmpty(PostCode)}\n{EnsureNotEmpty(City)}\n{EnsureNotEmpty(Address)}\n{StreetType}\n{HouseNumber}\n{Comment}";
-    }
-
-    /// <summary>
-    /// Ensures that empty or null strings are replaced with a single space for consistent formatting.
-    /// </summary>
-    /// <param name="value">The string value to check and format</param>
-    /// <returns>The original value if not empty, otherwise a single space character</returns>
-    /// <remarks>
-    /// This helper method maintains consistent spacing in printed invoices by ensuring that
-    /// empty address fields don't collapse, which could affect the visual layout and
-    /// alignment of the invoice format.
-    /// </remarks>
-    private static string EnsureNotEmpty(string value)
-    {
-        return string.IsNullOrEmpty(value) ? " " : value;
-    }
 }

@@ -36,7 +36,7 @@ public sealed class BadAPNumberError : ErrorBase
     /// <value>
     /// A descriptive message indicating that an invalid apparatus number was provided.
     /// </value>
-    public new string Message { get; } = "Bad AP number.";
+    public override string Message { get; } = "Bad AP number.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

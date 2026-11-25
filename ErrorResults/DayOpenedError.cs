@@ -22,7 +22,7 @@ public sealed class DayOpenedError : ErrorBase
     /// <value>
     /// A descriptive message indicating that the fiscal day is currently open and preventing the operation.
     /// </value>
-    public new string Message { get; } = "Day opened.";
+    public override string Message { get; } = "Day opened.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

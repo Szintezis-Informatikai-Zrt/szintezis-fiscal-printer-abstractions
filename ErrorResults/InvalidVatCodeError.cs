@@ -37,7 +37,7 @@ public sealed class InvalidVatCodeError : ErrorBase
     /// <value>
     /// A descriptive message indicating that an invalid VAT code was encountered during processing.
     /// </value>
-    public new string Message { get; } = "Invalid Vat code error.";
+    public override string Message { get; } = "Invalid Vat code error.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

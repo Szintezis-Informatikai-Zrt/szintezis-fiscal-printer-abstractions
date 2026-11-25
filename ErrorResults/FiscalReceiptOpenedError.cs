@@ -36,7 +36,7 @@ public sealed class FiscalReceiptOpenedError : ErrorBase
     /// <value>
     /// A descriptive message indicating that a fiscal receipt is currently open and preventing the operation.
     /// </value>
-    public new string Message { get; } = "Fiscal receipt opened.";
+    public override string Message { get; } = "Fiscal receipt opened.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

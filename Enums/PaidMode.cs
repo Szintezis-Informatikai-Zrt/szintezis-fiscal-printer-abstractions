@@ -13,7 +13,7 @@ namespace CronisNext.FiscalPrinter.Enums;
 /// and cash drawer operations. The Display attribute values represent the fiscal printer codes
 /// used internally for each payment method.
 /// </remarks>
-[EnumExtensions]
+[EnumExtensions(MetadataSource = MetadataSource.DisplayAttribute)]
 public enum PaidMode
 {
     /// <summary>

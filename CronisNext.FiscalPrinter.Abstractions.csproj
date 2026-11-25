@@ -1,16 +1,44 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>CronisNext.FiscalPrinter</RootNamespace>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="FluentResults" Version="3.16.0" />
-    <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta11" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-  </ItemGroup>
+
+  <!-- NuGet package metadata. This package is public: it ships XML docs and a .snupkg with embedded sources. -->
+  <PropertyGroup>
+    <PackageId>CronisNext.FiscalPrinter.Abstractions</PackageId>
+    <Version>2.0.0</Version>
+    <Authors>Szintézis Informatikai Zrt.</Authors>
+    <Company>Szintézis Informatikai Zrt.</Company>
+    <Description>Abstractions for integrating fiscal printer implementations</Description>
+    <PackageTags>fiscal;printer;pos;fiscat;efp</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Szintezis-Informatikai-Zrt/szintezis-fiscal-printer-abstractions</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Szintezis-Informatikai-Zrt/szintezis-fiscal-printer-abstractions/wiki</PackageProjectUrl>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <!-- Symbols: portable PDB in a separate .snupkg, with every source file embedded in the PDB. -->
+    <DebugType>portable</DebugType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedAllSources>true</EmbedAllSources>
+    <!-- Source Link would point at the private repository, so it is disabled; sources are embedded instead. -->
+    <EnableSourceLink>false</EnableSourceLink>
+    <PublishRepositoryUrl>false</PublishRepositoryUrl>
+    <!-- Do not stamp the private repository's commit id into the package or the informational version. -->
+    <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
+    <!-- Keep local build paths out of the PDB. -->
+    <PathMap>$(MSBuildProjectDirectory)=/_/CronisNext.FiscalPrinter.Abstractions</PathMap>
+  </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CronisNext.Enums\CronisNext.Enums.csproj" />
+    <PackageReference Include="FluentResults" Version="4.0.0" />
+    <!-- Generator only (not the meta package), so the generated code does not depend on
+         NetEscapades.EnumGenerators.RuntimeDependencies and nothing flows to package consumers. -->
+    <PackageReference Include="NetEscapades.EnumGenerators.Generators" Version="1.0.0-beta20" PrivateAssets="all" />
   </ItemGroup>
 </Project>

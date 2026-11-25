@@ -36,7 +36,7 @@ public sealed class DayClosedError : ErrorBase
     /// <value>
     /// A descriptive message indicating that the fiscal day is closed and preventing the operation.
     /// </value>
-    public new string Message { get; } = "Day closed.";
+    public override string Message { get; } = "Day closed.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

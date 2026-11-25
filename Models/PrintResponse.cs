@@ -1,4 +1,4 @@
-using CronisNext.FiscalPrinter.Enums;
+﻿using CronisNext.FiscalPrinter.Enums;
 
 namespace CronisNext.FiscalPrinter.Models;
 
@@ -29,19 +29,19 @@ public sealed class PrintResponse
     public string? ApNumber { get; set; }
 
     /// <summary>
-    /// Gets or sets the sequential receipt number assigned by the fiscal printer.
+    /// Gets or sets the document number assigned by the fiscal printer.
     /// </summary>
     /// <value>
-    /// The receipt number in the format "CCCC/RRRRR" where CCCC is the closure number and
-    /// RRRRR is the sequential receipt number, or <c>null</c> if not applicable.
+    /// The document number in the format "CCCC/RRRRR" where CCCC is the closure number and
+    /// RRRRR is the sequential document number, or <c>null</c> if not applicable.
     /// </value>
     /// <remarks>
-    /// Receipt numbers are sequential identifiers that uniquely identify each fiscal transaction
+    /// Document numbers are sequential identifiers that uniquely identify each fiscal transaction
     /// within the printer's memory. They are used for document lookup, reprinting, and audit
     /// trail purposes. The format includes both the fiscal closure period and the sequential
     /// number within that period.
     /// </remarks>
-    public string? ReceiptNo { get; set; }
+    public string? DocumentNumber { get; set; }
 
     /// <summary>
     /// Gets or sets the invoice number for simplified invoice transactions.
@@ -60,12 +60,23 @@ public sealed class PrintResponse
     /// Gets or sets the type of fiscal document that was printed.
     /// </summary>
     /// <value>
-    /// A <see cref="ReceiptType"/> value indicating the specific type of document that was processed.
+    /// A <see cref="DocumentType"/> value indicating the specific type of document that was processed.
     /// </value>
     /// <remarks>
-    /// The receipt type determines the fiscal treatment and legal requirements that were applied
+    /// The document type determines the fiscal treatment and legal requirements that were applied
     /// to this transaction. This information is essential for proper categorization in reporting
     /// systems and for understanding the regulatory context of the transaction.
     /// </remarks>
-    public ReceiptType ReceiptType { get; set; }
+    public DocumentType DocumentType { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether a manual receipt reprint should be offered.
+    /// </summary>
+    public bool ManualReprintRequired { get; set; }
+
+    /// <summary>
+    /// Gets or sets the printer status reported by the completed print command.
+    /// </summary>
+    public PrinterStatus? PrinterStatus { get; set; }
+
 }

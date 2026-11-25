@@ -62,14 +62,14 @@ public class OriginalDocument
     /// Gets or sets the type of the original fiscal document being referenced.
     /// </summary>
     /// <value>
-    /// An <see cref="OriginalReceiptType"/> value indicating the fiscal document type of the original transaction.
+    /// An <see cref="OriginalDocumentType"/> value indicating the fiscal document type of the original transaction.
     /// </value>
     /// <remarks>
-    /// The original receipt type determines the appropriate referencing procedures and affects
+    /// The original document type determines the appropriate referencing procedures and affects
     /// how the related transaction is processed. Different document types may have different
     /// business rules, time limitations, and regulatory requirements for referencing operations.
     /// </remarks>
-    public required OriginalReceiptType OriginalReceiptType { get; set; } = OriginalReceiptType.FiscalReceipt;
+    public required OriginalDocumentType OriginalDocumentType { get; set; } = OriginalDocumentType.FiscalReceipt;
 
     /// <summary>
     /// Gets or sets the receipt number of the original document being referenced.

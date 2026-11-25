@@ -36,7 +36,7 @@ public sealed class SalesOver24HoursError : ErrorBase
     /// <value>
     /// A descriptive message indicating that sales have exceeded the regulatory 24-hour limit.
     /// </value>
-    public new string Message { get; } = "Sales over 24 hours.";
+    public override string Message { get; } = "Sales over 24 hours.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

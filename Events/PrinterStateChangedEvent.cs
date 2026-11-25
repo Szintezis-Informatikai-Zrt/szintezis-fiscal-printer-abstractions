@@ -1,4 +1,5 @@
 ﻿using CronisNext.Enums;
+using CronisNext.FiscalPrinter.Models;
 
 namespace CronisNext.FiscalPrinter.Events;
 
@@ -6,6 +7,7 @@ namespace CronisNext.FiscalPrinter.Events;
 /// Represents an event that is raised when the operational state of the fiscal printer changes.
 /// </summary>
 /// <param name="State">The new operational state that the printer has transitioned to</param>
+/// <param name="Status">The printer status</param>
 /// <remarks>
 /// This event provides notification of printer state transitions, allowing the application
 /// to respond appropriately to changes in printer availability, error conditions, or
@@ -26,4 +28,4 @@ namespace CronisNext.FiscalPrinter.Events;
 /// displays, enable or disable printer-dependent functionality, and trigger appropriate
 /// error handling or recovery procedures.
 /// </remarks>
-public sealed record PrinterStateChangedEvent(PrinterStatusType State);
+public sealed record PrinterStateChangedEvent(PrinterStatusType State, PrinterStatus Status);

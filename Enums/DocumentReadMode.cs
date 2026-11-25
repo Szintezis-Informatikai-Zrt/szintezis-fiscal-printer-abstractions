@@ -4,11 +4,11 @@
 /// Defines the different modes used for reading and referencing fiscal documents stored in printer memory.
 /// </summary>
 /// <remarks>
-/// Receipt modes are used when reading historical documents, checking document status, or referencing
+/// Document read modes are used when reading historical documents, checking document status, or referencing
 /// previously printed fiscal documents for operations like returns, storno procedures, or audit purposes.
 /// Each mode corresponds to a specific category of fiscal document stored in the printer's memory.
 /// </remarks>
-public enum ReceiptModes
+public enum DocumentReadMode
 {
     /// <summary>
     /// Mode for accessing standard sales receipts, invoices, and empties tickets.
@@ -19,7 +19,7 @@ public enum ReceiptModes
     /// details, verifying completion status, or preparing return/storno documents that
     /// reference original sales transactions.
     /// </remarks>
-    SaleReceipt = 1,
+    Sale = 1,
 
     /// <summary>
     /// Mode for accessing cash management and drawer operation receipts.
@@ -30,7 +30,7 @@ public enum ReceiptModes
     /// cash drawer totals and financial reporting. Used for cash reconciliation and
     /// financial audit purposes.
     /// </remarks>
-    MoneyMovementReceipt = 2,
+    MoneyMovement = 2,
 
     /// <summary>
     /// Mode for accessing return receipts and merchandise return documentation.
@@ -40,7 +40,7 @@ public enum ReceiptModes
     /// reading return transaction details, verifying return processing, and maintaining
     /// proper audit trails for merchandise return operations and customer refunds.
     /// </remarks>
-    ReturnReceipt = 3,
+    Return = 3,
 
     /// <summary>
     /// Mode for accessing storno (cancellation/correction) receipts.
@@ -51,5 +51,5 @@ public enum ReceiptModes
     /// compliance verification, and ensuring proper handling of document corrections
     /// and transaction cancellations.
     /// </remarks>
-    StornoReceipt = 4,
+    Storno = 4,
 }

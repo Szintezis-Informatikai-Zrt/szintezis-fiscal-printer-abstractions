@@ -1,4 +1,5 @@
 ﻿using CronisNext.Enums;
+using CronisNext.FiscalPrinter.Enums;
 using CronisNext.FiscalPrinter.Models;
 
 namespace CronisNext.FiscalPrinter.Contexts;
@@ -14,6 +15,27 @@ namespace CronisNext.FiscalPrinter.Contexts;
 /// </remarks>
 public interface IPrinterContext
 {
+    /// <summary>The selected output type for the active sales document.</summary>
+    DocumentOutputType OutputType { get; }
+
+    /// <summary>Whether this printer supports electronic receipts.</summary>
+    bool SupportsElectronicReceipts { get; }
+
+    /// <summary>Whether the cash drawer should be opened when printing a canceled sales document.</summary>
+    bool OpenDrawerForCanceledDocuments { get; }
+
+    /// <summary>Whether the last output is available for manual reprinting.</summary>
+    bool CanReprint { get; }
+
+    /// <summary>Selects the output type and clears the previous reprint state.</summary>
+    void SetOutputType(DocumentOutputType outputType);
+
+    /// <summary>Toggles the output type and clears the previous reprint state.</summary>
+    void SwapOutputType();
+
+    /// <summary>Marks the last output as available for reprinting.</summary>
+    void EnableReprint();
+
     /// <summary>
     /// Gets a value indicating whether the fiscal printer has been successfully initialized and is ready for operations.
     /// </summary>
@@ -53,25 +75,46 @@ public interface IPrinterContext
     PrinterStatus? Status { get; }
 
     /// <summary>
-    /// Initializes the fiscal printer connection and prepares it for operations.
+    /// Asynchronously waits until the printer context has been initialized.
     /// </summary>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the wait operation.</param>
+    /// <returns>A task that completes when initialization is finished.</returns>
     /// <remarks>
-    /// This method establishes communication with the printer hardware, performs initial
-    /// configuration, and sets the printer to a ready state. Should be called before
-    /// attempting any printer operations.
-    /// </remarks>
-    void Initialize();
-
-    /// <summary>
-    /// Asynchronously waits for the fiscal printer to complete initialization.
-    /// </summary>
-    /// <param name="cancellationToken">Token to cancel the wait operation</param>
-    /// <returns>A task that completes when the printer initialization is finished</returns>
-    /// <remarks>
-    /// This method allows callers to wait for initialization completion without blocking.
-    /// It will return immediately if the printer is already initialized.
+    /// This method is useful for components that need to wait for the printer to be ready
+    /// before proceeding with their operations. The wait will complete whether initialization
+    /// succeeds or fails - check <see cref="Initialized"/> to determine the outcome.
     /// </remarks>
     Task UntilInitialized(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Attempts to begin initialization. Returns true if this call started initialization,
+    /// false if initialization was already started or completed.
+    /// </summary>
+    /// <returns>True if initialization was started by this call; false if already in progress or completed.</returns>
+    /// <remarks>
+    /// This method is used by <see cref="Interfaces.IFiscalPrinterService.InitializeAsync"/> to coordinate
+    /// initialization state. The context stores the initialization state since it is a singleton,
+    /// while services may be transient.
+    /// </remarks>
+    bool TryBeginInitialization();
+
+    /// <summary>
+    /// Marks initialization as successfully completed.
+    /// </summary>
+    /// <remarks>
+    /// Called by <see cref="Interfaces.IFiscalPrinterService.InitializeAsync"/> after all plugins have
+    /// completed successfully. This signals waiting tasks and updates the state to ready.
+    /// </remarks>
+    void CompleteInitialization();
+
+    /// <summary>
+    /// Marks initialization as failed, allowing retry.
+    /// </summary>
+    /// <remarks>
+    /// Called by <see cref="Interfaces.IFiscalPrinterService.InitializeAsync"/> when plugin initialization fails.
+    /// This resets the initialization state to allow retrying.
+    /// </remarks>
+    void FailInitialization();
 
     /// <summary>
     /// Sets the printer context to an error state, indicating that operations cannot proceed.

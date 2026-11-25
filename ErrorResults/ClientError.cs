@@ -40,9 +40,9 @@ public sealed class ClientError : ErrorBase
     /// that occurred during printer communication or operation. These reasons are aggregated into
     /// a single client error to simplify error handling while preserving diagnostic information.
     /// </remarks>
-    public ClientError(IList<IError> reasons)
+    public ClientError(IReadOnlyList<IError> reasons)
     {
-        this.Reasons.AddRange(reasons);
+        Reasons.AddRange(reasons);
         Message = $"FisCat client returned errors: {string.Join(", ", reasons)}";
     }
 
@@ -56,7 +56,7 @@ public sealed class ClientError : ErrorBase
     /// The message provides a human-readable summary of the client error and its causes, making it easier
     /// to diagnose communication problems and understand what went wrong during the printer operation.
     /// </remarks>
-    public new string Message { get; }
+    public override string Message { get; }
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

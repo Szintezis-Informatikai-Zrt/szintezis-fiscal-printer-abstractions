@@ -36,7 +36,7 @@ public sealed class DepositTicketAlreadyExistsError : ErrorBase
     /// <value>
     /// A descriptive message indicating that a deposit ticket with the same identifier already exists.
     /// </value>
-    public new string Message { get; } = "Deposit ticket already exists.";
+    public override string Message { get; } = "Deposit ticket already exists.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

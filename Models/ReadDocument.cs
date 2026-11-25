@@ -7,10 +7,10 @@ namespace CronisNext.FiscalPrinter.Models;
 /// the printer's memory for reprinting, verification, or audit purposes.
 /// </summary>
 /// <remarks>
-/// Read receipt parameters provide the precise identification needed to locate and retrieve
+/// Document lookup parameters provide the precise identification needed to locate and retrieve
 /// specific fiscal documents from the printer's internal memory. This functionality is essential
 /// for document reprinting, transaction verification, audit procedures, and compliance reporting.
-/// The combination of receipt mode, closure number, and receipt number creates a unique
+/// The combination of document mode, closure number, and document number creates a unique
 /// identifier for any fiscal document stored in the system.
 /// 
 /// <para>
@@ -29,21 +29,26 @@ namespace CronisNext.FiscalPrinter.Models;
 /// businesses to access historical data for various operational and compliance purposes.
 /// </para>
 /// </remarks>
-public sealed class ReadReceipt
+public sealed class ReadDocument
 {
     /// <summary>
     /// Gets or sets the type of fiscal document being requested for reading.
     /// </summary>
     /// <value>
-    /// A <see cref="ReceiptModes"/> value indicating the category of document to retrieve.
+    /// A <see cref="DocumentReadMode"/> value indicating the category of document to retrieve.
     /// </value>
     /// <remarks>
-    /// The receipt mode determines which category of fiscal documents to search within,
+    /// The document mode determines which category of fiscal documents to search within,
     /// such as sales receipts, money movement receipts, returns, or storno documents.
     /// This categorization helps the system efficiently locate the requested document
     /// and ensures that the appropriate document type is retrieved.
     /// </remarks>
-    public required ReceiptModes ReceiptMode { get; set; }
+    public required DocumentReadMode DocumentMode { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the underlying document is a fiscal receipt or simplified invoice.
+    /// </summary>
+    public OriginalDocumentType? OriginalDocumentType { get; set; }
 
     /// <summary>
     /// Gets or sets the fiscal closure number that contains the requested document.
@@ -60,17 +65,17 @@ public sealed class ReadReceipt
     public required int ClosureNumber { get; set; }
 
     /// <summary>
-    /// Gets or sets the sequential receipt number within the specified closure period.
+    /// Gets or sets the sequential document number within the specified closure period.
     /// </summary>
     /// <value>
     /// The sequential number assigned to the document within its closure period.
     /// </value>
     /// <remarks>
-    /// The receipt number provides the specific sequential identifier for the document
-    /// within its closure period. Combined with the closure number and receipt mode,
+    /// The document number provides the specific sequential identifier for the document
+    /// within its closure period. Combined with the closure number and document mode,
     /// this creates a unique identifier that precisely locates the requested document
     /// in the fiscal printer's memory archive.
     /// </remarks>
-    public required int ReceiptNumber { get; set; }
+    public required int DocumentNumber { get; set; }
 }
 

@@ -37,7 +37,7 @@ public sealed class PrintInterruptedError : ErrorBase
     /// <value>
     /// A descriptive message indicating that the printing operation was unexpectedly halted.
     /// </value>
-    public new string Message { get; } = "Print operation was interrupted.";
+    public override string Message { get; } = "Print operation was interrupted.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

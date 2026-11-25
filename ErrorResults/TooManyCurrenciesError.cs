@@ -37,7 +37,7 @@ public sealed class TooManyCurrenciesError : ErrorBase
     /// <value>
     /// A descriptive message indicating that the maximum number of supported currencies has been exceeded.
     /// </value>
-    public new string Message { get; } = "Too many currencies.";
+    public override string Message { get; } = "Too many currencies.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

@@ -1,4 +1,4 @@
-namespace CronisNext.FiscalPrinter.Models;
+﻿namespace CronisNext.FiscalPrinter.Models;
 
 /// <summary>
 /// Provides detailed status information about the current operational condition of a fiscal printer,
@@ -116,6 +116,12 @@ public sealed class PrinterStatus : IEquatable<PrinterStatus>
     public required bool DayOpened { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether self-service mode is enabled.
+    /// </summary>
+    /// <remarks>When self-service mode is enabled, <see cref="VfdDisplayDisconnected" /> is not an error.</remarks>
+    public required bool SelfServiceMode { get; set; }
+
+    /// <summary>
     /// Gets or sets a value indicating whether there is a communication error with the printer hardware.
     /// </summary>
     /// <value>
@@ -153,6 +159,7 @@ public sealed class PrinterStatus : IEquatable<PrinterStatus>
                LowBattery == other.LowBattery &&
                UserSuspend == other.UserSuspend &&
                DayOpened == other.DayOpened &&
+               SelfServiceMode == other.SelfServiceMode &&
                ErrorComm == other.ErrorComm;
     }
 
@@ -173,13 +180,19 @@ public sealed class PrinterStatus : IEquatable<PrinterStatus>
     /// The hash code is computed from all status flags to ensure that instances with
     /// the same status values produce the same hash code for proper equality behavior.
     /// </remarks>
-    public override int GetHashCode() => HashCode.Combine(
-        VfdDisplayDisconnected,
-        PrinterCover,
-        PaperError,
-        SalesOver24Hours,
-        PrintingMechanismFailure,
-        LowBattery,
-        UserSuspend,
-        DayOpened);
+    public override int GetHashCode()
+    {
+        var hashCode = new HashCode();
+        hashCode.Add(VfdDisplayDisconnected);
+        hashCode.Add(PrinterCover);
+        hashCode.Add(PaperError);
+        hashCode.Add(SalesOver24Hours);
+        hashCode.Add(PrintingMechanismFailure);
+        hashCode.Add(LowBattery);
+        hashCode.Add(UserSuspend);
+        hashCode.Add(DayOpened);
+        hashCode.Add(SelfServiceMode);
+
+        return hashCode.ToHashCode();
+    }
 }

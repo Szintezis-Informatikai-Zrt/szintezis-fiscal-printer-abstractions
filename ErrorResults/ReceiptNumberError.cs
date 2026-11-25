@@ -44,7 +44,7 @@ public class ReceiptNumberError(string errorMessage) : ErrorBase
     /// of the problem and guides appropriate resolution strategies, whether they involve
     /// configuration changes, data corrections, or system adjustments.
     /// </remarks>
-    public new string Message { get; } = errorMessage;
+    public override string Message { get; } = errorMessage;
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

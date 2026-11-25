@@ -1,4 +1,4 @@
-﻿using CronisNext.FiscalPrinter.ErrorResults;
+﻿namespace CronisNext.FiscalPrinter.ErrorResults;
 
 /// <summary>
 /// Represents an error that occurs when a custom payment method name exceeds the maximum allowed
@@ -37,7 +37,7 @@ public sealed class CustomPaymentNameTooLongError : ErrorBase
     /// <value>
     /// A descriptive message indicating that the custom payment method name exceeds the maximum allowed length.
     /// </value>
-    public new string Message { get; } = "Custom payment name is too long.";
+    public override string Message { get; } = "Custom payment name is too long.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

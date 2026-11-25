@@ -63,14 +63,14 @@ public sealed class StornoReceipt
     /// Gets or sets the type of the original document being cancelled.
     /// </summary>
     /// <value>
-    /// An <see cref="OriginalReceiptType"/> value indicating whether the original was a fiscal receipt or simplified invoice.
+    /// An <see cref="OriginalDocumentType"/> value indicating whether the original was a fiscal receipt or simplified invoice.
     /// </value>
     /// <remarks>
-    /// The original receipt type determines the cancellation procedure and affects how customer
+    /// The original document type determines the cancellation procedure and affects how customer
     /// information is handled during the storno process. Different document types may have
     /// different regulatory requirements for cancellation and different audit trail needs.
     /// </remarks>
-    public OriginalReceiptType OriginalReceiptType { get; set; } = OriginalReceiptType.FiscalReceipt;
+    public OriginalDocumentType OriginalDocumentType { get; set; } = OriginalDocumentType.FiscalReceipt;
 
     /// <summary>
     /// Gets or sets the receipt number of the original document being cancelled.
@@ -101,19 +101,13 @@ public sealed class StornoReceipt
     /// </remarks>
     public string StornoReason { get; set; } = "Other";
 
-    /// <summary>
-    /// Gets or sets the total amount of the original transaction being cancelled.
-    /// </summary>
-    /// <value>
-    /// The monetary amount of the original transaction in the local currency.
-    /// </value>
-    /// <remarks>
-    /// The amount must match the total value of the original transaction being cancelled.
-    /// This serves as a verification mechanism to ensure that the correct transaction is being
-    /// referenced and helps prevent accidental cancellation of wrong transactions. The amount
-    /// is used for validation and audit trail documentation.
-    /// </remarks>
-    public required decimal Amount { get; set; }
+    public List<Tender> Tenders { get; set; } = [];
+
+    /// <summary>Items supplied by the caller for free storno printing.</summary>
+    public List<Invoice.Item> Items { get; set; } = [];
+
+    /// <summary>Receipt-level discounts grouped by tax category.</summary>
+    public List<TaxDiscount> TaxDiscounts { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the customer information associated with this storno transaction.
@@ -128,4 +122,6 @@ public sealed class StornoReceipt
     /// customer information may be optional but can be useful for customer service and audit purposes.
     /// </remarks>
     public required Customer Customer { get; set; }
+
+    public List<NonFiscalLine> NonFiscalRows { get; set; } = [];
 }

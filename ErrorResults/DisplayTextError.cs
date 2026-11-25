@@ -37,7 +37,7 @@ public sealed class DisplayTextError : ErrorBase
     /// <value>
     /// A descriptive message indicating that an error occurred while processing text for display.
     /// </value>
-    public new string Message { get; } = "Display text error.";
+    public override string Message { get; } = "Display text error.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

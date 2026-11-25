@@ -31,7 +31,7 @@ public sealed class PaperError : ErrorBase
     /// <value>
     /// A descriptive message indicating that paper-related issues are preventing printing operations.
     /// </value>
-    public new string Message { get; } = "No paper.";
+    public override string Message { get; } = "No paper.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

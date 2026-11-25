@@ -38,7 +38,7 @@ public sealed class BadClosureNumberError : ErrorBase
     /// <value>
     /// A descriptive message indicating that an invalid closure number was referenced.
     /// </value>
-    public new string Message { get; } = "Bad closure number.";
+    public override string Message { get; } = "Bad closure number.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

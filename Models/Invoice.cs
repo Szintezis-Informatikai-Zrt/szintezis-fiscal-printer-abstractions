@@ -80,6 +80,8 @@ public sealed class Invoice()
     /// </remarks>
     public List<Payment> Payments { get; set; } = [];
 
+    public decimal Rounding { get; set; }
+
     /// <summary>
     /// Gets or sets the collection of tax-specific discounts applied to this invoice.
     /// </summary>
@@ -178,7 +180,7 @@ public sealed class Invoice()
         public decimal GrossPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets the total gross value for this line item (quantity × gross price).
+        /// Gets or sets the total gross value for this line item (quantity ï¿½ gross price).
         /// </summary>
         /// <value>
         /// The total amount for this item before any item-specific discounts are applied.

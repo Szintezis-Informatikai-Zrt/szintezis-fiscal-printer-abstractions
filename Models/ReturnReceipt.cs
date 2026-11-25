@@ -1,6 +1,4 @@
-using CronisNext.FiscalPrinter.Enums;
-
-namespace CronisNext.FiscalPrinter.Models;
+﻿namespace CronisNext.FiscalPrinter.Models;
 
 /// <summary>
 /// Represents a return receipt for merchandise being returned by customers, documenting the return transaction
@@ -102,6 +100,10 @@ public sealed class ReturnReceipt
     /// </remarks>
     public List<Tender> Tenders { get; set; } = [];
 
+    public decimal Rounding { get; set; }
+
+    public List<NonFiscalLine> NonFiscalRows { get; set; } = [];
+
     /// <summary>
     /// Gets or sets the collection of items being returned in this transaction.
     /// </summary>
@@ -126,18 +128,6 @@ public sealed class ReturnReceipt
     /// </remarks>
     public sealed class Item
     {
-        /// <summary>
-        /// Gets or sets the position index of this item within the return transaction.
-        /// </summary>
-        /// <value>
-        /// A sequential number indicating the order of this item in the return list.
-        /// </value>
-        /// <remarks>
-        /// The index provides ordering information for return processing and helps maintain
-        /// consistent item sequencing in return documentation and system processing.
-        /// </remarks>
-        public int Index { get; set; }
-
         /// <summary>
         /// Gets or sets the abbreviated name of the item being returned.
         /// </summary>

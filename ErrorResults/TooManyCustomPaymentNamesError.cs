@@ -37,7 +37,7 @@ public sealed class TooManyCustomPaymentNamesError : ErrorBase
     /// <value>
     /// A descriptive message indicating that the maximum number of supported custom payment methods has been exceeded.
     /// </value>
-    public new string Message { get; } = "Too many custom payment names error.";
+    public override string Message { get; } = "Too many custom payment names error.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

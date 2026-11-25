@@ -37,7 +37,7 @@ public sealed class ReceiptAlreadyExistsError : ErrorBase
     /// <value>
     /// A descriptive message indicating that a receipt with the same identifier already exists.
     /// </value>
-    public new string Message { get; } = "Receipt already exists.";
+    public override string Message { get; } = "Receipt already exists.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

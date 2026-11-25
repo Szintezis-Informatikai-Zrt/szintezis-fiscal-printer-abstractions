@@ -37,7 +37,7 @@ public sealed class BadReceiptNoError : ErrorBase
     /// <value>
     /// A descriptive message indicating that an invalid receipt number was provided.
     /// </value>
-    public new string Message { get; } = "Bad receiptNo.";
+    public override string Message { get; } = "Bad receiptNo.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

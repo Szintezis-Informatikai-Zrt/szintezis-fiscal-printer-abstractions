@@ -29,7 +29,7 @@ namespace CronisNext.FiscalPrinter.Enums;
 /// </list>
 /// </para>
 /// </remarks>
-[EnumExtensions]
+[EnumExtensions(MetadataSource = MetadataSource.DisplayAttribute)]
 public enum ReadReportType
 {
     /// <summary>

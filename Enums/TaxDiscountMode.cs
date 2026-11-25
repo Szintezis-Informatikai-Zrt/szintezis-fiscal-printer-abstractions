@@ -24,7 +24,7 @@ namespace CronisNext.FiscalPrinter.Enums;
 /// enabling proper communication with fiscal hardware and ensuring compliance with fiscal protocols.
 /// </para>
 /// </remarks>
-[EnumExtensions]
+[EnumExtensions(MetadataSource = MetadataSource.DisplayAttribute)]
 public enum TaxDiscountMode
 {
     /// <summary>

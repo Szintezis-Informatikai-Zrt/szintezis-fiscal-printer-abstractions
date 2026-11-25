@@ -4,11 +4,11 @@ namespace CronisNext.FiscalPrinter.Enums;
 /// Defines the different types of fiscal documents that can be printed by the fiscal printer system.
 /// </summary>
 /// <remarks>
-/// Receipt types determine the fiscal treatment, legal requirements, and processing behavior of documents.
+/// Document types determine the fiscal treatment, legal requirements, and processing behavior of documents.
 /// Each type has specific validation rules, customer information requirements, and tax handling procedures
 /// that must be followed for regulatory compliance.
 /// </remarks>
-public enum ReceiptType
+public enum DocumentType
 {
     /// <summary>
     /// A standard retail receipt for customer purchases.
@@ -88,7 +88,7 @@ public enum ReceiptType
     /// standard storno receipts. They may allow cancellations across fiscal days or
     /// have different documentation requirements based on local regulations.
     /// </remarks>
-    FreeStrono = 7,
+    FreeStorno = 7,
 
     /// <summary>
     /// A free-form return receipt with flexible return policies.

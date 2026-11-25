@@ -1,4 +1,4 @@
-﻿using CronisNext.FiscalPrinter.ErrorResults;
+﻿namespace CronisNext.FiscalPrinter.ErrorResults;
 
 /// <summary>
 /// Represents an error that occurs when there are issues with the first custom payment method
@@ -37,7 +37,7 @@ public sealed class FirstCustomPaymentNameError : ErrorBase
     /// <value>
     /// A descriptive message indicating that there is a problem with the first custom payment method name.
     /// </value>
-    public new string Message { get; } = "First custom payment name error.";
+    public override string Message { get; } = "First custom payment name error.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

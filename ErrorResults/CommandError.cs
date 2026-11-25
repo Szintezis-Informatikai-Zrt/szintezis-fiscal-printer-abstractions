@@ -45,9 +45,10 @@ public class CommandError : ErrorBase
         ResponseCode = responseCode;
         WithMetadata(nameof(ResponseCode), responseCode);
 
-        Message = $"Printer returned error code: {ResponseCode} with error message: {ResponseMessage}.";
         ResponseMessage = responseMessage;
         WithMetadata(nameof(ResponseMessage), responseMessage);
+
+        Message = $"Printer returned error code: {ResponseCode} with error message: {ResponseMessage}.";
     }
 
     /// <summary>
@@ -87,7 +88,7 @@ public class CommandError : ErrorBase
     /// The combined message provides complete error information in a single, easy-to-read format
     /// that includes all diagnostic details returned by the fiscal printer hardware.
     /// </remarks>
-    public new string Message { get; }
+    public override string Message { get; }
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.

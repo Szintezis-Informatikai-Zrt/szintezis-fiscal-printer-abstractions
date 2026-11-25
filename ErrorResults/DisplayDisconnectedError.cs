@@ -36,7 +36,7 @@ public sealed class DisplayDisconnectedError : ErrorBase
     /// <value>
     /// A descriptive message indicating that the customer display is disconnected or not responding.
     /// </value>
-    public new string Message { get; } = "Display disconnected.";
+    public override string Message { get; } = "Display disconnected.";
 
     /// <summary>
     /// Gets the unique error code that identifies this specific error type.
